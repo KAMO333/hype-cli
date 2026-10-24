@@ -4,10 +4,17 @@ import { program } from "commander";
 import dotenv from "dotenv";
 import clipboardy from "clipboardy";
 import open from "open";
+import { fileURLToPath } from "url";
+import path from "path";
 import { getGitDiffs } from "./git-service.js";
 import { generatePost } from "./ai-service.js";
 
-dotenv.config();
+// Resolve the absolute path to the CLI's installation folder
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Force dotenv to ONLY load the .env file located inside the hype-cli folder
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 program
   .name("hype-cli")
