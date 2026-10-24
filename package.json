@@ -1,0 +1,28 @@
+{
+  "name": "hype-cli",
+  "version": "1.0.0",
+  "description": "AI-powered CLI to generate LinkedIn posts from Git diffs",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "hype-cli": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "git",
+    "ai",
+    "linkedin"
+  ],
+  "author": "Kamogelo Mmopane",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "clipboardy": "^4.0.0",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "open": "^10.1.0"
+  }
+}
