@@ -2,6 +2,7 @@
 
 import { program } from "commander";
 import dotenv from "dotenv";
+import { getGitDiffs } from "./git-service.js";
 
 dotenv.config();
 
@@ -24,7 +25,14 @@ program
     console.log(`🚀 Starting Hype-CLI...`);
     console.log(`🔍 Scanning Git history for the last ${options.days} days...`);
 
-    // Git extraction and AI logic goes here
+    // Trigger the Git extraction
+    const diffData = getGitDiffs(options.days);
+
+    // Temporarily log the first 200 characters just to prove it extracted your code
+    console.log("--- RAW GIT DATA PREVIEW ---");
+    console.log(diffData.substring(0, 200) + "...\n");
+
+    // The AI logic will go here next
   });
 
 program.parse(process.argv);
