@@ -1,20 +1,16 @@
 #!/usr/bin/env node
 
 import { program } from "commander";
-import dotenv from "dotenv";
 import clipboardy from "clipboardy";
 import open from "open";
-import { fileURLToPath } from "url";
+import fs from "fs";
 import path from "path";
+import os from "os";
 import { getGitDiffs } from "./git-service.js";
 import { generatePost } from "./ai-service.js";
 
-// Resolve the absolute path to the CLI's installation folder
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Force dotenv to ONLY load the .env file located inside the hype-cli folder
-dotenv.config({ path: path.join(__dirname, ".env") });
+// Define the universal path for the config file (e.g., C:\Users\acer\.hype-cli.json or ~/.hype-cli.json)
+const configPath = path.join(os.homedir(), ".hype-cli.json");
 
 program
   .name("hype-cli")
@@ -22,6 +18,16 @@ program
     "Automates LinkedIn technical posts by analyzing your local Git diffs",
   )
   .version("1.0.0");
+
+// NEW FEATURE: The Auth Command
+program
+  .command("auth <key>")
+  .description("Securely save your Gemini API key to your machine")
+  .action((key) => {
+    const config = { GEMINI_API_KEY: key };
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    console.log(`\n✅ API Key saved successfully to ${configPath}\n`);
+  });
 
 program
   .command("generate")
@@ -32,33 +38,33 @@ program
     "3",
   )
   .action(async (options) => {
+    // Check if the user has authenticated yet
+    if (!fs.existsSync(configPath)) {
+      console.error(
+        "\n❌ No API key found. Please run 'hype-cli auth <your-gemini-api-key>' first.\n",
+      );
+      process.exit(1);
+    }
+
     console.log(`🚀 Starting Hype-CLI...`);
     console.log(`🔍 Scanning Git history for the last ${options.days} days...`);
 
     const diffData = await getGitDiffs(options.days);
     const aiResponse = await generatePost(diffData);
 
-    // FIX 1: Print the post to the terminal so you can actually read it
     console.log("\n" + "=".repeat(40));
     console.log("📝 YOUR LINKEDIN POST:");
     console.log("=".repeat(40) + "\n");
     console.log(aiResponse.post_text);
     console.log("\n" + "=".repeat(40));
 
-    // Copy to clipboard
     clipboardy.writeSync(aiResponse.post_text);
     console.log("\n✅ LinkedIn post copied to your clipboard!");
 
-    // FIX 2: Generate the code image using Carbon
     if (aiResponse.hero_snippet) {
       console.log("📸 Opening Carbon to generate your code snippet image...");
-
-      // Carbon uses standard URL encoding
       const encodedCode = encodeURIComponent(aiResponse.hero_snippet);
-
-      // Pass the encoded string to Carbon (using the VSCode theme and auto-detecting language)
       const carbonUrl = `https://carbon.now.sh/?t=vscode&l=auto&code=${encodedCode}`;
-
       await open(carbonUrl);
     }
 

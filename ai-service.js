@@ -1,11 +1,17 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import fs from "fs";
+import path from "path";
+import os from "os";
 
 export async function generatePost(gitDiff) {
-  const apiKey = process.env.GEMINI_API_KEY;
+  // Read the key from the home directory config file
+  const configPath = path.join(os.homedir(), ".hype-cli.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  const apiKey = config.GEMINI_API_KEY;
 
   if (!apiKey) {
     console.error(
-      "\n❌ GEMINI_API_KEY is missing. Please add it to your .env file.",
+      "\n❌ GEMINI_API_KEY is missing from your config. Run 'hype-cli auth <key>' again.",
     );
     process.exit(1);
   }
