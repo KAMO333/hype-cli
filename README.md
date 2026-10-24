@@ -9,9 +9,9 @@ Built to automate the "Build in Public" workflow, `hype-cli` analyzes your code 
 - **🤖 AI-Powered Analysis:** Leverages the `gemini-3.5-flash` model (with automatic failover fallbacks) to read raw Git diffs and understand the architectural intent behind the code.
 - **🎯 Recruiter-Optimized Formatting:** Enforces a strict output schema (The Hook, What I Did, The Evidence, The Impact) tailored for tech recruiters and engineering managers.
 - **🕹️ Interactive Commit Selection:** Uses `@inquirer/prompts` to let you scroll through your recent commit history and select exactly which feature you want to post about.
-- **📸 Automated Code Snippets:** Automatically finds the most impressive block of code (the "Hero Snippet"), Base64 encodes it, and launches [Carbon.now.sh](https://carbon.now.sh/) in your browser for a beautiful, shareable image.
+- **📸 Automated Code Snippets:** Automatically finds the most impressive block of code (the "Hero Snippet"), URL encodes it, and launches [Carbon](https://carbon.now.sh/) in your browser for a beautiful, shareable image.
 - **📋 Frictionless DX:** Automatically copies the generated LinkedIn text directly to your OS clipboard. Just hit `Ctrl+V`.
-- **🛡️ Multi-Repo/Multi-Account Safe:** Dynamically reads your local `git config user.name` at runtime. It only extracts _your_ code contributions, ensuring you never accidentally share team members' code or proprietary company secrets.
+- **🛡️ Secure & Multi-Repo Safe:** Dynamically reads your local `git config user.name` at runtime to extract only _your_ commits. API keys are stored safely in your global home directory (`~/.hype-cli.json`), completely isolated from your corporate or open-source codebases.
 
 ## 🛠️ Tech Stack
 
@@ -19,7 +19,6 @@ Built to automate the "Build in Public" workflow, `hype-cli` analyzes your code 
 - **CLI Framework:** [Commander.js](https://www.npmjs.com/package/commander)
 - **Interactive UI:** [@inquirer/prompts](https://www.npmjs.com/package/@inquirer/prompts)
 - **AI SDK:** [@google/generative-ai](https://www.npmjs.com/package/@google/generative-ai)
-- **System Integrations:** `child_process` (Git execution), `clipboardy` (OS clipboard), `open` (Browser automation)
 
 ## ⚙️ Prerequisites
 
@@ -29,36 +28,21 @@ Built to automate the "Build in Public" workflow, `hype-cli` analyzes your code 
 
 ## 🚀 Installation
 
-Because `hype-cli` is a global developer tool, you can clone it anywhere on your machine and link it globally to use it inside any of your other project directories.
+Install the CLI globally via npm:
 
-1. **Clone the repository:**
+```bash
+npm install -g @kamo333/hype-cli
+```
 
-   ```bash
-   git clone https://github.com/KAMO333/hype-cli.git
-   cd hype-cli
-   ```
+## 🔐 Authentication
 
-2. **Install dependencies:**
+Before generating your first post, securely save your Gemini API key to your machine. You only need to do this once.
 
-   ```bash
-   npm install
-   ```
+```bash
+hype-cli auth <your_gemini_api_key_here>
+```
 
-3. **Configure the environment:**
-
-   Create a `.env` file in the root of the `hype-cli` directory and add your API key:
-
-   ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
-   ```
-
-4. **Link the CLI globally:**
-
-   ```bash
-   npm link
-   ```
-
-   > **Note:** If you encounter an `EACCES` permission error on Linux/macOS, configure your global npm prefix to your home directory (`npm config set prefix '~/.npm-global'`) and add it to your `PATH`, then retry `npm link` without `sudo`.
+This saves your key to a hidden file in your home directory, keeping it out of your project folders.
 
 ## 💻 Usage
 
