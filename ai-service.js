@@ -13,17 +13,17 @@ export async function generatePost(gitDiff) {
   const genAI = new GoogleGenerativeAI(apiKey);
 
   const prompt = `
-  You are a Senior Developer Advocate. Analyze the following git diff and generate a LinkedIn post and a code snippet.
+  You are a Senior Developer Advocate following the 'Crushing Digital' strategy for developer marketing. 
+  Analyze the following git diff and generate a LinkedIn post and a code snippet.
   
   Output MUST be a valid JSON object with exactly two keys:
-  1. "post_text": A highly engaging, professional LinkedIn post. Structure it exactly like this:
-      - A hook about the overarching problem or context.
-      - The Problem.
-      - The Solution.
-      - The technical challenge faced.
-      - The Fix.
-      - "What I learned:" takeaway.
-      Do NOT use cringe hashtags. Use a confident, analytical tone.
+  1. "post_text": A highly engaging LinkedIn post tailored for tech recruiters and hiring managers. Structure it exactly in this order:
+      - Technical Tags: Start the post with 3 to 5 hyper-specific hashtags. Do NOT use generic tags like #coding, #developer, or #tech. Instead, look at the code snippet and hashtag the exact syntax, methods, or architectural patterns used (e.g., #AsyncAwait, #ChildProcess, #ErrorHandling, #NodeJS).
+      - The Hook: A punchy opening line focused on a real-world problem or business value.
+      - What I Did: Describe the feature or architecture clearly (describe what was built, not just the tools used).
+      - The Evidence (Technical Details): A concise breakdown of the specific challenge and the code written to overcome it.
+      - The Impact: Why this matters (e.g., performance, UX, code maintainability, or business value).
+      Keep formatting clean with line breaks between each section. Write in a confident, professional tone.
   2. "hero_snippet": Extract the single most impressive contiguous block of code (max 30 lines) that demonstrates the core logic. Return just the raw code, no markdown wrappers.
 
   Here is the Git Diff data:
