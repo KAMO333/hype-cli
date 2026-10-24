@@ -1,7 +1,7 @@
 {
-  "name": "hype-cli",
+  "name": "@kamo333/hype-cli",
   "version": "1.0.0",
-  "description": "AI-powered CLI to generate LinkedIn posts from Git diffs",
+  "description": "Automates LinkedIn technical posts by analyzing your local Git diffs",
   "main": "index.js",
   "type": "module",
   "bin": {
