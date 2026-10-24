@@ -28,7 +28,7 @@ program
     console.log(`🚀 Starting Hype-CLI...`);
     console.log(`🔍 Scanning Git history for the last ${options.days} days...`);
 
-    const diffData = getGitDiffs(options.days);
+    const diffData = await getGitDiffs(options.days);
     const aiResponse = await generatePost(diffData);
 
     // FIX 1: Print the post to the terminal so you can actually read it
