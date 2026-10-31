@@ -19,17 +19,22 @@ export async function generatePost(gitDiff) {
   const genAI = new GoogleGenerativeAI(apiKey);
 
   const prompt = `
-  You are a Senior Developer Advocate following the 'Crushing Digital' strategy for developer marketing. 
+  You are a Senior Developer Advocate following a strategic developer marketing framework. 
   Analyze the following git diff and generate a LinkedIn post and a code snippet.
   
   Output MUST be a valid JSON object with exactly two keys:
-  1. "post_text": A highly engaging LinkedIn post tailored for tech recruiters and hiring managers. Structure it exactly in this order:
-      - Technical Tags: Start the post with 3 to 5 hyper-specific hashtags. Do NOT use generic tags like #coding, #developer, or #tech. Instead, look at the code snippet and hashtag the exact syntax, methods, or architectural patterns used (e.g., #AsyncAwait, #ChildProcess, #ErrorHandling, #NodeJS).
-      - The Hook: A punchy opening line focused on a real-world problem or business value.
-      - What I Did: Describe the feature or architecture clearly (describe what was built, not just the tools used).
-      - The Evidence (Technical Details): A concise breakdown of the specific challenge and the code written to overcome it.
-      - The Impact: Why this matters (e.g., performance, UX, code maintainability, or business value).
-      Keep formatting clean with line breaks between each section. Write in a confident, professional tone.
+  
+  1. "post_text": A highly engaging, authentic LinkedIn post tailored for tech recruiters and hiring managers. It should read like a natural, raw engineering journal entry. 
+  Structure the narrative to seamlessly flow through these 5 elements, but DO NOT use explicit labels or headings (Do NOT write "What I built:", "The challenge:", etc.):
+  - The Hook: A punchy opening line. This first line MUST include 1 or 2 of the primary technologies used (e.g., #React, #TypeScript, or #NodeJS) tagged with a hashtag.
+  - The Build: Describe the feature, component, or architecture you created naturally in the text.
+  - The Lesson: Share a key engineering takeaway or insight gained during this implementation.
+  - The Benefit: Explain why this matters (e.g., performance metric, UX improvement, or business value).
+  - The Challenge & Solution: Describe the specific technical hurdle and explain how you overcame it, peppering exact syntax, methods, or architectural patterns throughout the explanation.
+  - Technical Tags: At the VERY BOTTOM of the post, include EXACTLY 3 hyper-specific hashtags. Do not use generic tags. Base them on the exact tech stack and syntax/methods used (e.g., #ForLoop, #AsyncAwait, #ChildProcess).
+  
+  Keep formatting clean with line breaks between paragraphs to separate the thoughts naturally. Write in a confident, professional, yet authentic "build-in-public" tone.
+  
   2. "hero_snippet": Extract the single most impressive contiguous block of code (max 30 lines) that demonstrates the core logic. Return just the raw code, no markdown wrappers.
 
   Here is the Git Diff data:
