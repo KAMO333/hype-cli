@@ -7,9 +7,9 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 import { getGitDiffs } from "./git-service.js";
-import { generatePost } from "./ai-service.js";
+import { generatePost, generateMultimodalPost } from "./ai-service.js";
+import { captureEnvironment } from "./capture-service.js";
 
-// Define the universal path for the config file (e.g., C:\Users\acer\.hype-cli.json or ~/.hype-cli.json)
 const configPath = path.join(os.homedir(), ".hype-cli.json");
 
 program
@@ -19,7 +19,6 @@ program
   )
   .version("1.0.0");
 
-// NEW FEATURE: The Auth Command
 program
   .command("auth <key>")
   .description("Securely save your Gemini API key to your machine")
@@ -38,7 +37,6 @@ program
     "3",
   )
   .action(async (options) => {
-    // Check if the user has authenticated yet
     if (!fs.existsSync(configPath)) {
       console.error(
         "\n❌ No API key found. Please run 'hype-cli auth <your-gemini-api-key>' first.\n",
@@ -69,6 +67,49 @@ program
     }
 
     console.log("🎉 Done! Hit Ctrl+V on LinkedIn.");
+  });
+
+program
+  .command("capture")
+  .description(
+    "Capture the active screen and programmatic logs for multimodal AI analysis",
+  )
+  .option("-t, --terminal", "Read piped terminal output via stdin")
+  .action(async (options) => {
+    if (!fs.existsSync(configPath)) {
+      console.error(
+        "\n❌ No API key found. Please run 'hype-cli auth <your-gemini-api-key>' first.\n",
+      );
+      process.exit(1);
+    }
+
+    console.log(`🚀 Starting Hype-CLI Capture Engine...`);
+
+    // 1. Capture the text AND the screenshot
+    const captureData = await captureEnvironment(options);
+
+    // 2. Send both to Gemini
+    const aiResponse = await generateMultimodalPost(captureData);
+
+    // 3. Save the raw screenshot asset locally
+    const assetsDir = path.join(os.homedir(), "hype-assets");
+    if (!fs.existsSync(assetsDir)) {
+      fs.mkdirSync(assetsDir);
+    }
+    const imagePath = path.join(assetsDir, `hype-capture-${Date.now()}.png`);
+    fs.writeFileSync(imagePath, captureData.base64Image, "base64");
+
+    // 4. Output and Handoff
+    console.log("\n" + "=".repeat(40));
+    console.log("📝 YOUR LINKEDIN POST:");
+    console.log("=".repeat(40) + "\n");
+    console.log(aiResponse.post_text);
+    console.log("\n" + "=".repeat(40));
+
+    clipboardy.writeSync(aiResponse.post_text);
+    console.log("\n✅ LinkedIn post copied to your clipboard!");
+    console.log(`📸 Raw terminal screenshot saved securely to: ${imagePath}`);
+    console.log("🎉 Done! Grab your image and hit Ctrl+V on LinkedIn.");
   });
 
 program.parse(process.argv);
