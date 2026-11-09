@@ -25,7 +25,7 @@ export async function generatePost(gitDiff) {
   
   1. "post_text": A highly engaging, authentic LinkedIn post tailored for tech recruiters and hiring managers. It should read like a natural, raw engineering journal entry. 
   Structure the narrative to seamlessly flow through these 5 elements, but DO NOT use explicit labels or headings (Do NOT write "What I built:", "The challenge:", etc.):
-  - The Hook: A punchy opening line. This first line MUST include 1 or 2 of the primary technologies used (e.g., #React, #TypeScript, or #NodeJS) tagged with a hashtag.
+  - The Hook: A punchy, authentic opening line that reads like a real developer's journal. You MUST place 1 or 2 primary technology hashtags within the FIRST 5 WORDS of the sentence. Make it flow naturally. Examples: "I've been working with #NodeJS...", "While building this #React feature...", "Just shipped a #TypeScript update...". Do not use robotic phrasing.
   - The Build: Describe the feature, component, or architecture you created naturally in the text.
   - The Lesson: Share a key engineering takeaway or insight gained during this implementation.
   - The Benefit: Explain why this matters (e.g., performance metric, UX improvement, or business value).
@@ -113,7 +113,7 @@ export async function generateMultimodalPost({ terminalLogs, base64Image }) {
   
   1. "post_text": A highly engaging, authentic LinkedIn post tailored for tech recruiters and hiring managers. It should read like a natural, raw engineering journal entry. 
   Structure the narrative to seamlessly flow through these 5 elements, but DO NOT use explicit labels or headings:
-  - The Hook: A punchy opening line. This first line MUST include 1 or 2 of the primary technologies used tagged with a hashtag.
+  - The Hook: A punchy, authentic opening line that reads like a real developer's journal. You MUST place 1 or 2 primary technology hashtags within the FIRST 5 WORDS of the sentence. Make it flow naturally. Examples: "I've been working with #NodeJS...", "While debugging this #Bash script...", "Just shipped a #TypeScript update...". Do not use robotic phrasing.
   - The Context: Describe what is happening in the screenshot/logs naturally in the text.
   - The Lesson: Share a key engineering takeaway or insight gained here.
   - The Benefit: Explain why solving this or building this matters.
